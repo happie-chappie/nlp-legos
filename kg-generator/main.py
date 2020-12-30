@@ -1,12 +1,13 @@
-from spacy.lang.en import English
+import spacy
 from spacy.pipeline import EntityRuler
 
-nlp = English()
+nlp = spacy.load("en_core_web_sm")
 ruler = EntityRuler(nlp)
-patterns = [{"label": "ORGA", "pattern": "Apple"},
-            {"label": "GPE", "pattern": [{"LOWER": "san"}, {"LOWER": "francisco"}]}]
+patterns = [{"label": "ORGA", "pattern": "Apple"}]
 ruler.add_patterns(patterns)
 nlp.add_pipe(ruler)
 
-doc = nlp("Apple is opening its first big office in San Francisco.")
-print([(ent.text, ent.label_) for ent in doc.ents])
+doc = nlp("Apple is a company in the U.S.")
+
+for ent in doc.ents:
+    print(ent.text, ent.label_)
